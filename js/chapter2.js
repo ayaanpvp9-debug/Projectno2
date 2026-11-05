@@ -198,6 +198,14 @@ export function initDataFactory() {
         { opacity: 0, y: 10 },
         { opacity: 1, y: 0, duration: 0.45, stagger: 0.035, ease: "power2.out", overwrite: true }
       );
+      const chips = stageButtons[index].querySelectorAll(".chip");
+      if (chips.length) {
+        gsap.fromTo(
+          chips,
+          { opacity: 0, y: 8 },
+          { opacity: 1, y: 0, duration: 0.35, stagger: 0.03, ease: "power2.out", overwrite: true }
+        );
+      }
     }
   }
 
@@ -224,11 +232,21 @@ export function initDataFactory() {
   });
 
   /* -- scroll drive ------------------------------------------------------- */
+  // Scroll progress through the pipeline, drawn as a live line.
+  const progressBar = document.createElement("div");
+  progressBar.className = "factory__progress";
+  progressBar.innerHTML = "<span></span>";
+  progressBar.setAttribute("aria-hidden", "true");
+  const barAnchor = root.querySelector(".factory__bar");
+  if (barAnchor) barAnchor.after(progressBar);
+  const progressFill = progressBar.firstElementChild;
+
   let trigger = ScrollTrigger.create({
     trigger: root,
     start: "top 72%",
     end: "bottom 68%",
     onUpdate: (self) => {
+      if (progressFill) progressFill.style.width = (self.progress * 100).toFixed(2) + "%";
       const next = clamp(Math.floor(self.progress * STAGES.length), 0, STAGES.length - 1);
       if (next !== activeStage) {
         activeStage = next;

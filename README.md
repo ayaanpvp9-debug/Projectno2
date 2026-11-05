@@ -69,6 +69,29 @@ Nothing here claims to be a frontier model, and no external AI service is contac
 
 ---
 
+## Scroll choreography
+
+Almost nothing on the page simply "appears". GSAP ScrollTrigger drives the whole
+document, and every sequence is tied to a reading beat rather than to time:
+
+| Layer | Where | What it does |
+| --- | --- | --- |
+| Pinned prologue | `#hero` (desktop **and** mobile) | title dissolves, the network expands, hand-off copy rises |
+| Pinned comparison | `#c1-pin` | rules-vs-learning diagrams draw themselves as you scroll |
+| Network assembly | Ch.03 | neurons pop in layer by layer, links stroke on, then one forward pass |
+| Data factory | Ch.02 | a live progress line fills, stages advance, chips stagger in |
+| Training lab | Ch.04 | the loop steps advance with scroll; training auto-starts once in view |
+| Language pipeline | Ch.05 | progress line, attention map redraw, token chips |
+| Horizontal gallery | Ch.06 (desktop) | eight domains scrubbed sideways; on mobile a scroll progress line instead |
+| Masked typography | every chapter | headlines split into lines that rise out of their own mask |
+| Atmosphere | whole document | a fixed colour wash whose hue shifts chapter by chapter |
+| Ghost numerals | every chapter | oversized outline numerals parallaxing behind the heads |
+| Progress line | whole document | a fixed 2px line showing position in the story |
+| Velocity skew | desktop | large panels lean into fast scrolling and settle |
+
+All of it is skipped under `prefers-reduced-motion`, where content is laid out
+statically and every control still works.
+
 ## Structure
 
 ```
@@ -79,6 +102,8 @@ css/
 js/
   main.js               entry point
   core.js               boot, Lenis + GSAP plumbing, chrome, reveals, counters
+  motion.js             document-wide scroll choreography (masked type, atmosphere,
+                        ghost numerals, parallax, progress line, velocity skew)
   hero.js               canvas lattice + opening timeline + pinned exit
   chapter1.js           pinned rules-vs-learning sequence, learn-by-example demo
   chapter2.js           data pipeline content, stage/type interaction

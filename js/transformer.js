@@ -475,6 +475,41 @@ export function initTransformer() {
     });
   }
 
+  /* -- scroll progress through the four stages ----------------------------- */
+  const pipelineEl = document.getElementById("tx-pipeline");
+  if (pipelineEl) {
+    const bar = document.createElement("div");
+    bar.className = "tx__progress";
+    bar.innerHTML = "<span></span>";
+    bar.setAttribute("aria-hidden", "true");
+    pipelineEl.after(bar);
+    const fill = bar.firstElementChild;
+    ScrollTrigger.create({
+      trigger: ".tx__steps",
+      start: "top 78%",
+      end: "bottom 62%",
+      onUpdate: (self) => {
+        if (fill) fill.style.width = (self.progress * 100).toFixed(2) + "%";
+      },
+    });
+  }
+
+  /* -- the attention map redraws itself as it comes into view -------------- */
+  if (attnMatrix && !reduceMotion) {
+    ScrollTrigger.create({
+      trigger: ".tx-attn",
+      start: "top 88%",
+      once: true,
+      onEnter: () => {
+        gsap.fromTo(
+          [...attnMatrix.children],
+          { opacity: 0, scale: 0.55 },
+          { opacity: 1, scale: 1, duration: 0.5, stagger: { each: 0.004 }, ease: "power2.out" }
+        );
+      },
+    });
+  }
+
   /* -- scroll focus for the four stages ----------------------------------- */
   gsap.utils.toArray(".tx-step").forEach((step, i) => {
     ScrollTrigger.create({

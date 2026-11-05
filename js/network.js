@@ -284,31 +284,6 @@ export function initNetwork() {
     });
   }
 
-  function assemble() {
-    if (assembled) return;
-    assembled = true;
-
-    if (reduceMotion) {
-      gsap.set(nodeEls.flat().map((n) => n.group), { opacity: 1, scale: 1 });
-      linkEls.flat().forEach((l) => (l.line.style.strokeDashoffset = "0"));
-      refresh();
-      return;
-    }
-
-    const tl = gsap.timeline();
-    nodeEls.forEach((layer, l) => {
-      tl.to(
-        layer.map((n) => n.group),
-        { opacity: 1, scale: 1, duration: 0.55, stagger: 0.055, ease: "back.out(1.6)" },
-        l * 0.16
-      );
-    });
-    // strokeDashoffset lives in the inline style, so animate the style object.
-    linkEls.flat().forEach((l, i) => {
-      tl.to(l.line.style, { strokeDashoffset: 0, duration: 0.7, ease: "none" }, 0.15 + i * 0.006);
-    });
-  }
-
   /* -- state updates ------------------------------------------------------ */
   let current = forward();
 
@@ -467,19 +442,57 @@ export function initNetwork() {
     });
   }
 
-  /* -- scroll assembly ---------------------------------------------------- */
+  /* -- scroll assembly: the network draws itself as you scroll ------------- */
   build();
   refresh();
 
-  ScrollTrigger.create({
-    trigger: "#nn",
-    start: "top 72%",
-    once: true,
-    onEnter: () => {
-      assemble();
-      window.setTimeout(animatePass, reduceMotion ? 0 : 900);
-    },
-  });
+  function initScrollAssembly() {
+    if (reduceMotion) {
+      assembled = true;
+      gsap.set(
+        nodeEls.flat().map((n) => n.group),
+        { opacity: 1, scale: 1 }
+      );
+      linkEls.flat().forEach((l) => (l.line.style.strokeDashoffset = "0"));
+      return;
+    }
+
+    prepareAssembly();
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#nn",
+        start: "top 82%",
+        end: "bottom 58%",
+        scrub: 0.7,
+      },
+    });
+
+    nodeEls.forEach((layer, l) => {
+      tl.to(
+        layer.map((n) => n.group),
+        { opacity: 1, scale: 1, duration: 0.45, stagger: 0.05, ease: "power2.out" },
+        l * 0.16
+      );
+    });
+    linkEls.forEach((links, l) => {
+      tl.to(
+        links.map((k) => k.line.style),
+        { strokeDashoffset: 0, duration: 0.4, stagger: 0.004, ease: "none" },
+        0.12 + l * 0.16
+      );
+    });
+
+    assembled = true;
+
+    // One automatic forward pass once the network is fully drawn.
+    ScrollTrigger.create({
+      trigger: "#nn",
+      start: "top 35%",
+      once: true,
+      onEnter: () => animatePass(),
+    });
+  }
+  initScrollAssembly();
 
   // Rebuild on breakpoint changes (mobile ↔ desktop layout).
   let resizeTimer = 0;

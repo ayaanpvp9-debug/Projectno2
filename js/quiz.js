@@ -271,21 +271,8 @@ export function initQuiz() {
   renderQuestion();
 
   /* --------------------------------------------------------------------------
-     Final lines + closing reveal
+     Closing mark (the lines themselves are choreographed in motion.js)
      -------------------------------------------------------------------------- */
-  const finalLines = gsap.utils.toArray("[data-final-line]");
-  const closingLines = gsap.utils.toArray("[data-closing-line]");
-
-  if (!reduceMotion) {
-    gsap.set([...finalLines, ...closingLines], { opacity: 0, y: 34 });
-    ScrollTrigger.batch([...finalLines, ...closingLines], {
-      start: "top 90%",
-      once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, { opacity: 1, y: 0, duration: 1.1, stagger: 0.12, ease: "power3.out" }),
-    });
-  }
-
   ScrollTrigger.create({
     trigger: "#closing",
     start: "top 80%",

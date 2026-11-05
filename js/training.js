@@ -50,6 +50,7 @@ export function initTrainingLab() {
     loss: 0,
     history: [],
     inView: true,
+    userPaused: false,
     trainX: [],
     trainY: [],
     testX: [],
@@ -391,6 +392,7 @@ export function initTrainingLab() {
       } else {
         state.running = !state.running;
       }
+      state.userPaused = !state.running;
       state.lr = lrValue();
       setStatus(state.running ? "TRAINING" : "PAUSED", state.running ? "running" : "");
       updatePlayLabel();
@@ -447,23 +449,56 @@ export function initTrainingLab() {
   // Nudge the chart to say something friendly on first paint.
   drawChart();
 
-  // Chapter caption drift
-  if (!reduceMotion) {
-    const captions = [
-      "Forward pass → the network guesses.",
-      "Loss → one number for how wrong the guess was.",
-      "Backpropagation → every weight learns its share of the blame.",
-      "Update → step downhill. Repeat thousands of times.",
-    ];
-    const caps = gsap.utils.toArray(".loop__step");
-    const capEl = document.getElementById("loop-caption");
+  /* -- the four-step loop: scroll-driven, with hover as an override -------- */
+  const captions = [
+    "Forward pass → the network guesses. Data flows in, predictions come out.",
+    "Loss → one number for how wrong the guess was.",
+    "Backpropagation → every weight learns its share of the blame.",
+    "Update → step downhill. Then repeat thousands of times.",
+  ];
+  const caps = gsap.utils.toArray(".loop__step");
+  const capEl = document.getElementById("loop-caption");
+  let loopIndex = -1;
+
+  function setLoop(i) {
+    if (i === loopIndex) return;
+    loopIndex = i;
+    caps.forEach((c, k) => c.classList.toggle("is-active", k === i));
+    if (capEl) capEl.textContent = captions[i];
+  }
+
+  if (caps.length) {
+    // The step highlight follows the scroll position through the loop band.
+    ScrollTrigger.create({
+      trigger: ".loop",
+      start: "top 72%",
+      end: "bottom 58%",
+      onUpdate: (self) => setLoop(clamp(Math.floor(self.progress * 4), 0, 3)),
+      onEnterBack: () => setLoop(3),
+    });
+
     caps.forEach((el, i) => {
       const activate = () => {
-        if (capEl) capEl.textContent = captions[i];
+        loopIndex = i;
         caps.forEach((c) => c.classList.toggle("is-active", c === el));
+        if (capEl) capEl.textContent = captions[i];
       };
       el.addEventListener("pointerenter", activate);
       el.addEventListener("click", activate);
     });
   }
+
+  // The lab starts training by itself the first time it is seen — the visitor
+  // can pause, reset or tune it at any point.
+  ScrollTrigger.create({
+    trigger: "#lab",
+    start: "top 70%",
+    once: true,
+    onEnter: () => {
+      if (reduceMotion || state.running || state.userPaused || state.epoch > 0) return;
+      state.running = true;
+      setStatus("TRAINING", "running");
+      updatePlayLabel();
+    },
+  });
 }

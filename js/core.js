@@ -10,6 +10,7 @@ import { initTransformer } from "./transformer.js";
 import { initApplications } from "./applications.js";
 import { initLimits } from "./limits.js";
 import { initQuiz } from "./quiz.js";
+import { initMotion } from "./motion.js";
 
 /* --------------------------------------------------------------------------
    Environment
@@ -282,21 +283,6 @@ export function initReveals() {
       }),
   });
 
-  // Big chapter headlines
-  gsap.utils.toArray("[data-split]").forEach((el) => {
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 46 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: el, start: "top 92%", once: true },
-      }
-    );
-  });
-
   // Chapter heads
   gsap.utils.toArray(".chapter-head").forEach((head) => {
     const extras = head.querySelectorAll(".chapter-head__meta, .lede");
@@ -315,8 +301,8 @@ export function initReveals() {
     );
   });
 
-  // App + definition cards on mobile (desktop panels are inside the pinned track)
-  const cards = gsap.utils.toArray(".def, .app, .limit, .stat");
+  // Definition and stat blocks
+  const cards = gsap.utils.toArray(".def, .stat");
   cards.forEach((card) => {
     gsap.fromTo(
       card,
@@ -404,6 +390,7 @@ async function boot() {
   });
 
   initReveals();
+  initMotion();
 
   await runLoader();
 

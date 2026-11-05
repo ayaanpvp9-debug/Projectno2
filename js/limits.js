@@ -158,6 +158,21 @@ export function initLimits() {
       gsap.fromTo(body, { height: 0 }, { height: h, duration: 0.5, ease: "power2.out" });
     }
 
+    // Rows slide in with the scroll rather than snapping on/off.
+    if (!reduceMotion) {
+      gsap.fromTo(
+        items,
+        { x: -34, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          ease: "none",
+          stagger: 0.05,
+          scrollTrigger: { trigger: list, start: "top 92%", end: "top 45%", scrub: 0.6 },
+        }
+      );
+    }
+
     items.forEach((item) => {
       const head = item.querySelector(".limit__head");
       head.addEventListener("click", () => {

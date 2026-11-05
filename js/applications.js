@@ -337,7 +337,19 @@ export function initApplications() {
         gsap.fromTo(nameEl, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, overwrite: true });
       }
     }
-    panels.forEach((p, i) => p.classList.toggle("is-active", i === index));
+    panels.forEach((p, i) => {
+      p.classList.toggle("is-active", i === index);
+      // Desktop: the active panel steps forward, its neighbours recede.
+      if (!reduceMotion && window.matchMedia("(min-width: 901px)").matches) {
+        gsap.to(p, {
+          opacity: i === index ? 1 : 0.55,
+          y: i === index ? 0 : 12,
+          duration: 0.55,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
+    });
   }
 
   setActive(0);
@@ -407,9 +419,16 @@ export function initApplications() {
     };
   });
 
-  /* -- mobile: vertical stack, observer-driven HUD ------------------------ */
+  /* -- mobile: vertical stack, scroll-driven progress --------------------- */
   mm.add("(max-width: 900px)", () => {
-    if (fillEl) fillEl.style.width = "100%";
+    const progressTrigger = ScrollTrigger.create({
+      trigger: "#gallery",
+      start: "top 75%",
+      end: "bottom 80%",
+      onUpdate: (self) => {
+        if (fillEl) fillEl.style.width = (self.progress * 100).toFixed(2) + "%";
+      },
+    });
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -422,6 +441,9 @@ export function initApplications() {
       { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
     );
     panels.forEach((p) => observer.observe(p));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      progressTrigger.kill();
+    };
   });
 }

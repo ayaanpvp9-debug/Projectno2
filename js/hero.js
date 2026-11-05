@@ -297,19 +297,24 @@ function createExit(lattice) {
     };
   });
 
-  // Mobile: no pin, just a gentle dissolve.
+  // Mobile: the same story beat, pinned for a shorter distance.
   mm.add("(max-width: 900px)", () => {
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: hero,
         start: "top top",
-        end: "bottom top",
-        scrub: true,
+        end: "+=85%",
+        scrub: 0.6,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
       },
     });
-    tl.to(inner, { opacity: 0, y: -60, duration: 1 }, 0)
-      .to(lattice.state, { scale: 1.15, opacity: 0.3, duration: 1 }, 0);
+    tl.to(inner, { opacity: 0, y: -70, scale: 0.96, duration: 1 }, 0)
+      .to(lattice.state, { scale: 1.28, opacity: 0.3, duration: 1 }, 0)
+      .fromTo(handoff, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3 }, 0.58)
+      .to(handoff, { opacity: 0, duration: 0.1 }, 0.9);
     return () => tl.kill();
   });
 }
