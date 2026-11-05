@@ -2817,8 +2817,8 @@ input[type="text"]:focus {
 .line {
   display: block;
   overflow: hidden;
-  padding-bottom: 0.09em;
-  margin-bottom: -0.09em;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
 }
 .line__in {
   display: block;
