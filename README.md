@@ -21,9 +21,33 @@ python3 -m http.server 3000
 Or `npx serve .`, or open `index.html` through any static host. (A plain `file://` open will
 block ES modules, so use a server.)
 
-**Deployment:** the site is pure HTML/CSS/JS. On Render, `render.yaml` is a ready Blueprint
-(runtime: static, publish path: `.`, empty build command). On Netlify/Vercel/GitHub Pages,
-publish the repository root. `.nojekyll` is included for GitHub Pages.
+---
+
+## Deploy to Render
+
+`render.yaml` in the repository root is a complete Render Blueprint — a static site
+with no build step, no server and no environment variables.
+
+1. Push this repository to GitHub (branch `main`).
+2. Render Dashboard → **New +** → **Blueprint**.
+3. Pick the repository. Render reads `render.yaml` and creates the site.
+4. First deploy takes about a minute. No configuration is asked for.
+
+What the Blueprint sets up:
+
+| Setting | Value |
+| --- | --- |
+| Service type | `web` / `runtime: static` |
+| Build command | *(empty — nothing to build)* |
+| Publish path | `.` (the repository root is the site) |
+| Auto-deploy | on every push to `main` |
+| Caching | HTML `must-revalidate`; `/css/*` and `/js/*` 1 hour; `/vendor/*` 30 days |
+| Headers | `nosniff`, `Referrer-Policy`, `Permissions-Policy` |
+
+Everything the page needs is vendored (`vendor/`), so the deploy has no external
+requests at runtime and no CDN dependency. Any other static host works the same way:
+publish the repository root, with no build step. `.nojekyll` is included for GitHub
+Pages.
 
 ---
 
