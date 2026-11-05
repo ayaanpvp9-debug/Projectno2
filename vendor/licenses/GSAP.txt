@@ -1,0 +1,11 @@
+GSAP (GreenSock Animation Platform) — gsap.min.js, ScrollTrigger.min.js
+Version 3.15.1 — https://gsap.com
+
+GSAP is distributed under the GreenSock Standard "No Charge" License:
+free to use in commercial and non-commercial projects, with the exception of
+reselling the library itself or building a competing animation tool.
+
+Full terms: https://gsap.com/standard-license/
+Standard license text: https://gsap.com/community/standard-license/
+
+Bundled here unmodified from the official npm package (`gsap@3.15.1`).

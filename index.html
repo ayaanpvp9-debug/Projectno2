@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>INSIDE AI — Beyond the Algorithm</title>
+<meta name="description" content="INSIDE AI is an interactive, scroll-driven documentary about artificial intelligence: what it is, how neural networks learn, how language models work, where AI is used, and where it fails." />
+<meta name="theme-color" content="#05060a" />
+<meta property="og:title" content="INSIDE AI — Beyond the Algorithm" />
+<meta property="og:description" content="An interactive journey into the technology that is changing how humanity thinks, creates and works." />
+<meta property="og:type" content="website" />
+
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/style.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2305060a'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%234b7dff'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%238b5cf6' stroke-width='1.2'/%3E%3C/svg%3E" />
+</head>
+<body class="is-loading">
+
+<!-- ============================================================
+     ATMOSPHERE
+     ============================================================ -->
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ============================================================
+     LOADER
+     ============================================================ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__inner">
+    <div class="loader__brand">INSIDE&nbsp;AI</div>
+    <div class="loader__bar"><span class="loader__bar-fill" id="loader-fill"></span></div>
+    <div class="loader__meta"><span id="loader-label">INITIALISING EXPERIENCE</span><span id="loader-count">00</span></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PERSISTENT CHROME
+     ============================================================ -->
+<header class="topbar" id="topbar">
+  <a class="topbar__brand" href="#hero" data-scroll-to="#hero">
+    <span class="topbar__mark" aria-hidden="true"></span>
+    <span class="topbar__name">INSIDE AI</span>
+  </a>
+  <div class="topbar__status">
+    <span class="topbar__dot" aria-hidden="true"></span>
+    <span class="topbar__chapter" id="topbar-chapter">PROLOGUE</span>
+  </div>
+  <nav class="topbar__nav" aria-label="Primary">
+    <button class="topbar__link" id="btn-restart" type="button">RESTART</button>
+    <span class="topbar__time" id="readtime">08 CHAPTERS</span>
+  </nav>
+</header>
+
+<nav class="rail" id="rail" aria-label="Chapter navigation">
+  <div class="rail__line" aria-hidden="true"><span class="rail__line-fill" id="rail-fill"></span></div>
+  <ol class="rail__list" id="rail-list"></ol>
+</nav>
+
+<div class="mobile-meter" aria-hidden="true">
+  <div class="mobile-meter__bar"><span id="mobile-fill"></span></div>
+  <span class="mobile-meter__label" id="mobile-label">PROLOGUE</span>
+</div>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main">
+
+<!-- ============================================================
+     PROLOGUE / HERO
+     ============================================================ -->
+<section class="hero" id="hero" data-chapter="PROLOGUE" data-chapter-label="The Unknown Machine">
+  <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+    <p class="kicker hero__kicker"><span class="kicker__tick" aria-hidden="true"></span> A SCROLL-DRIVEN DOCUMENTARY ON ARTIFICIAL INTELLIGENCE</p>
+
+    <div class="hero__stage">
+      <div class="hero__sequence" id="hero-sequence">
+        <p class="hero__seq" data-seq>YOU USE IT.</p>
+        <p class="hero__seq" data-seq>YOU TRUST IT.</p>
+        <p class="hero__seq" data-seq>BUT DO YOU <em>UNDERSTAND</em> IT?</p>
+      </div>
+
+      <div class="hero__title-wrap" id="hero-title-wrap">
+        <h1 class="hero__title" id="hero-title">
+          <span class="hero__title-a">INSIDE</span>
+          <span class="hero__title-b">AI</span>
+        </h1>
+        <p class="hero__sub" id="hero-sub">BEYOND THE ALGORITHM.</p>
+      </div>
+    </div>
+
+    <p class="hero__support" id="hero-support">An interactive journey into the technology that is changing how humanity thinks, creates and works.</p>
+
+    <div class="hero__meta" id="hero-meta">
+      <span><b>08</b> CHAPTERS</span>
+      <span><b>06</b> INTERACTIVE MODELS</span>
+      <span><b>00</b> PREREQUISITES</span>
+    </div>
+
+    <div class="hero__cue" id="hero-cue">
+      <span class="hero__cue-label">SCROLL TO BEGIN</span>
+      <span class="hero__cue-line" aria-hidden="true"></span>
+    </div>
+  </div>
+
+  <div class="hero__handoff" id="hero-handoff" aria-hidden="true">
+    <span class="hero__handoff-num">01</span>
+    <span class="hero__handoff-text">INTELLIGENCE, ENGINEERED.</span>
+  </div>
+
+  <div class="hero__frame" aria-hidden="true">
+    <span class="tf tf--tl"></span><span class="tf tf--tr"></span>
+    <span class="tf tf--bl"></span><span class="tf tf--br"></span>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER 01 — WHAT IS AI
+     ============================================================ -->
+<section class="chapter chapter--c1" id="c1" data-chapter="01" data-chapter-label="Intelligence, Engineered">
+  <header class="chapter-head">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">01</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">FOUNDATIONS</span>
+    </div>
+    <h2 class="display" data-split>INTELLIGENCE,<br />ENGINEERED.</h2>
+    <p class="lede">Artificial intelligence is not a single invention, and it is not a machine that thinks like you. It is a way of building software that improves by finding patterns in examples instead of following rules written by hand.</p>
+  </header>
+
+  <div class="c1-pin" id="c1-pin">
+    <div class="c1-stage">
+      <div class="c1-stage__copy">
+        <div class="c1-tabs" role="tablist" aria-label="Programming approach">
+          <button class="c1-tab is-active" data-approach="traditional" role="tab" aria-selected="true" type="button">TRADITIONAL PROGRAMMING</button>
+          <button class="c1-tab" data-approach="learning" role="tab" aria-selected="false" type="button">MACHINE LEARNING</button>
+        </div>
+        <p class="c1-caption" id="c1-caption">A programmer writes the rules. The computer applies them, exactly, to every input.</p>
+        <div class="c1-progress" aria-hidden="true"><span id="c1-progress-fill"></span></div>
+        <ol class="c1-steps" id="c1-steps">
+          <li class="is-active" data-step="0"><span>01</span>Inputs arrive</li>
+          <li data-step="1"><span>02</span>Rules are applied</li>
+          <li data-step="2"><span>03</span>An output is produced</li>
+        </ol>
+      </div>
+
+      <div class="c1-stage__visual">
+        <!-- Traditional programming -->
+        <svg class="c1-svg" id="c1-svg-traditional" viewBox="0 0 640 420" role="img" aria-label="Diagram: input plus hand-written rules produce output">
+          <defs>
+            <marker id="arrow-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="rgba(139,147,167,.8)"></path>
+            </marker>
+          </defs>
+          <g class="c1-layer" data-layer="0">
+            <rect class="c1-box" x="28" y="140" width="150" height="120" rx="4"></rect>
+            <text class="c1-box-label" x="48" y="176">INPUT</text>
+            <text class="c1-box-sub" x="48" y="202">an email</text>
+            <text class="c1-box-sub" x="48" y="224">a photo</text>
+            <text class="c1-box-sub" x="48" y="246">a transaction</text>
+          </g>
+          <g class="c1-layer" data-layer="1">
+            <path class="c1-wire" id="wire-1" d="M178 200 H 245" marker-end="url(#arrow-a)"></path>
+            <rect class="c1-box c1-box--accent" x="245" y="120" width="170" height="160" rx="4"></rect>
+            <text class="c1-box-label" x="265" y="156">RULES</text>
+            <text class="c1-code" x="265" y="186">if (words &gt; 3)</text>
+            <text class="c1-code" x="265" y="208">if (link = true)</text>
+            <text class="c1-code" x="265" y="230">if (sender ≠ known)</text>
+            <text class="c1-code" x="265" y="252">→ spam</text>
+            <text class="c1-box-sub" x="265" y="272">written by a human</text>
+          </g>
+          <g class="c1-layer" data-layer="2">
+            <path class="c1-wire" id="wire-2" d="M415 200 H 470" marker-end="url(#arrow-a)"></path>
+            <rect class="c1-box" x="470" y="140" width="142" height="120" rx="4"></rect>
+            <text class="c1-box-label" x="490" y="180">OUTPUT</text>
+            <text class="c1-box-sub" x="490" y="208" id="out-traditional">SPAM</text>
+            <text class="c1-box-sub" x="490" y="234">deterministic</text>
+          </g>
+        </svg>
+
+        <!-- Machine learning -->
+        <svg class="c1-svg" id="c1-svg-learning" viewBox="0 0 640 420" role="img" aria-label="Diagram: inputs plus examples produce a learned model, which produces output">
+          <defs>
+            <marker id="arrow-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="rgba(139,147,167,.8)"></path>
+            </marker>
+          </defs>
+          <g class="c1-layer" data-layer="0">
+            <rect class="c1-box" x="24" y="112" width="150" height="196" rx="4"></rect>
+            <text class="c1-box-label" x="44" y="148">INPUT</text>
+            <text class="c1-box-sub" x="44" y="174">an email</text>
+            <text class="c1-box-sub" x="44" y="196">a photo</text>
+            <text class="c1-box-sub" x="44" y="218">a transaction</text>
+            <text class="c1-box-sub" x="44" y="256">+</text>
+            <text class="c1-box-label" x="44" y="280" style="font-size:11px">EXAMPLES</text>
+            <g class="c1-chips" id="c1-chips"></g>
+          </g>
+          <g class="c1-layer" data-layer="1">
+            <path class="c1-wire" d="M174 210 H 238" marker-end="url(#arrow-b)"></path>
+            <rect class="c1-box c1-box--accent" x="238" y="150" width="176" height="120" rx="4"></rect>
+            <text class="c1-box-label" x="258" y="186">LEARNING</text>
+            <text class="c1-code" x="258" y="212">adjust weights</text>
+            <text class="c1-code" x="258" y="234">reduce error</text>
+            <text class="c1-box-sub" x="258" y="254">nobody writes the rules</text>
+          </g>
+          <g class="c1-layer" data-layer="2">
+            <path class="c1-wire" d="M414 210 H 466" marker-end="url(#arrow-b)"></path>
+            <rect class="c1-box" x="466" y="120" width="150" height="180" rx="4"></rect>
+            <text class="c1-box-label" x="486" y="156">LEARNED MODEL</text>
+            <text class="c1-box-sub" x="486" y="184">13 462 numbers</text>
+            <text class="c1-box-sub" x="486" y="208">found by training</text>
+            <text class="c1-code" x="486" y="240">new input →</text>
+            <text class="c1-code" x="486" y="262" id="out-learning">spam · 0.94</text>
+          </g>
+        </svg>
+
+        <div class="c1-eq" id="c1-eq">
+          <span class="c1-eq__k">TRADITIONAL</span>
+          <span class="c1-eq__v">INPUT + RULES → OUTPUT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="c1-defs">
+    <article class="def" data-reveal>
+      <span class="def__tag">FIELD</span>
+      <h3>Artificial intelligence</h3>
+      <p>The broad discipline of making computers perform tasks that normally require human intelligence — recognising a face, translating a sentence, choosing a move.</p>
+    </article>
+    <article class="def" data-reveal>
+      <span class="def__tag">SUBSET</span>
+      <h3>Machine learning</h3>
+      <p>Instead of writing rules, we show a program thousands of examples. It adjusts internal numbers until its answers match the examples. Nobody writes the rule; the rule is discovered.</p>
+    </article>
+    <article class="def" data-reveal>
+      <span class="def__tag">SUBSET OF A SUBSET</span>
+      <h3>Deep learning</h3>
+      <p>Machine learning with neural networks of many layers. Early layers learn simple features like edges; deeper layers combine them into shapes, objects and concepts.</p>
+    </article>
+  </div>
+
+  <div class="c1-demo" id="c1-demo" data-reveal>
+    <div class="c1-demo__head">
+      <div>
+        <span class="section-tag">EXPERIMENT 01 — LEARN BY EXAMPLE</span>
+        <h3 class="sub-display">NOBODY WROTE THE BOUNDARY.</h3>
+      </div>
+      <p class="c1-demo__hint">Two kinds of points. A human-drawn rule cuts the plane straight through the middle. A model learns from the examples you give it — and it can bend.</p>
+    </div>
+
+    <div class="c1-demo__body">
+      <div class="c1-demo__plot">
+        <svg id="c1-demo-svg" viewBox="0 0 480 340" role="img" aria-label="Scatter plot comparing a fixed rule boundary with a learned boundary">
+          <g id="c1-demo-grid"></g>
+          <path id="c1-demo-rule" class="demo-rule" d=""></path>
+          <path id="c1-demo-learned" class="demo-learned" d=""></path>
+          <g id="c1-demo-points"></g>
+        </svg>
+        <div class="c1-demo__legend">
+          <span><i class="dot dot--a"></i>CLASS A</span>
+          <span><i class="dot dot--b"></i>CLASS B</span>
+          <span><i class="line line--rule"></i>HUMAN RULE</span>
+          <span><i class="line line--learned"></i>LEARNED</span>
+        </div>
+      </div>
+
+      <div class="c1-demo__controls">
+        <label class="field">
+          <span class="field__label">TRAINING EXAMPLES <b id="c1-demo-n-out">60</b></span>
+          <input type="range" id="c1-demo-n" min="6" max="240" step="6" value="60" />
+        </label>
+        <div class="metric-row">
+          <div class="metric"><span class="metric__k">HUMAN RULE</span><span class="metric__v" id="c1-demo-rule-acc">—</span></div>
+          <div class="metric"><span class="metric__k">LEARNED MODEL</span><span class="metric__v metric__v--accent" id="c1-demo-learned-acc">—</span></div>
+        </div>
+        <button class="btn btn--ghost" id="c1-demo-retrain" type="button">TRAIN AGAIN <span aria-hidden="true">↻</span></button>
+        <p class="fineprint">The model is a real logistic regression trained on the visible points. Accuracy is measured on a separate set of 300 unseen points.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER 02 — THE DATA FACTORY
+     ============================================================ -->
+<section class="chapter chapter--c2" id="c2" data-chapter="02" data-chapter-label="The Data Factory">
+  <header class="chapter-head">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">02</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">RAW MATERIAL</span>
+    </div>
+    <h2 class="display" data-split>EVERY MODEL<br />BEGINS WITH DATA.</h2>
+    <p class="lede">A model does not contain knowledge the way a book does. It is a set of numbers shaped by examples. Change the examples and you change the model — including its blind spots.</p>
+  </header>
+
+  <div class="factory" id="factory">
+    <div class="factory__bar">
+      <div class="factory__types" role="tablist" aria-label="Choose a data type">
+        <button class="tab is-active" data-type="text" role="tab" aria-selected="true" type="button">TEXT</button>
+        <button class="tab" data-type="image" role="tab" aria-selected="false" type="button">IMAGES</button>
+        <button class="tab" data-type="audio" role="tab" aria-selected="false" type="button">AUDIO</button>
+        <button class="tab" data-type="numeric" role="tab" aria-selected="false" type="button">NUMBERS</button>
+      </div>
+      <div class="factory__hint"><span class="pulse-dot" aria-hidden="true"></span> SCROLL OR SELECT A STAGE</div>
+    </div>
+
+    <div class="factory__track" id="factory-track">
+      <svg class="factory__stream" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="30" x2="1000" y2="30" class="stream-base"></line>
+        <g id="stream-dots"></g>
+      </svg>
+      <ol class="factory__stages" id="factory-stages"></ol>
+    </div>
+
+    <div class="factory__detail" id="factory-detail">
+      <div class="factory__detail-head">
+        <span class="factory__detail-kicker" id="detail-kicker">STAGE 01 / 05</span>
+        <h3 class="factory__detail-title" id="detail-title">COLLECTION</h3>
+        <p class="factory__detail-lede" id="detail-lede"></p>
+      </div>
+      <div class="factory__detail-grid">
+        <div>
+          <span class="mini-label">WHAT HAPPENS</span>
+          <p id="detail-body"></p>
+        </div>
+        <div>
+          <span class="mini-label">WHERE IT GOES WRONG</span>
+          <ul class="detail-points" id="detail-points"></ul>
+        </div>
+      </div>
+      <div class="factory__sample" id="detail-sample" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <div class="stat-band" data-reveal>
+    <div class="stat">
+      <span class="stat__num" data-count="300" data-suffix="B">0</span>
+      <span class="stat__label">tokens used to train GPT-3 — roughly 300 billion words' worth of fragments</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num" data-count="80" data-suffix="/10/10">0</span>
+      <span class="stat__label">a typical train / validation / test split. The test set must stay unseen</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num" data-count="5" data-suffix=" STAGES">0</span>
+      <span class="stat__label">between raw data and a trained model. Skip one and the model inherits the error</span>
+    </div>
+  </div>
+
+  <aside class="callout callout--wide" data-reveal aria-label="Why data bias matters">
+    <span class="callout__tag">WHY IT MATTERS</span>
+    <p>Data is never neutral. If a hiring dataset contains mostly men, a model learns that pattern and repeats it. If medical images come from one hospital, the model may fail at another. Cleaning removes noise; it cannot remove a missing perspective.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     CHAPTER 03 — THE NEURAL NETWORK
+     ============================================================ -->
+<section class="chapter chapter--c3" id="c3" data-chapter="03" data-chapter-label="Inside the Network">
+  <header class="chapter-head">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">03</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">THE ARCHITECTURE</span>
+    </div>
+    <h2 class="display" data-split>NOT MAGIC.<br /><em>MATHEMATICS.</em></h2>
+    <p class="lede">A neural network is a stack of very simple units. Each unit multiplies its inputs by weights, adds a bias, and passes the result through a function. Stack thousands of them and the whole thing can recognise a face.</p>
+  </header>
+
+  <section class="nn" id="nn" aria-label="Interactive neural network">
+    <div class="nn__toolbar">
+      <span class="nn__badge"><span class="pulse-dot" aria-hidden="true"></span> LIVE NETWORK · 3—4—4—2</span>
+      <div class="nn__toolbar-actions">
+        <button class="btn btn--tiny" id="nn-randomise" type="button">RANDOMISE WEIGHTS</button>
+        <button class="btn btn--tiny btn--accent" id="nn-run" type="button">RUN FORWARD PASS <span aria-hidden="true">→</span></button>
+      </div>
+    </div>
+
+    <div class="nn__grid">
+      <div class="nn__stage">
+        <svg id="nn-svg" class="nn__svg" viewBox="0 0 900 520" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A three-input, two-hidden-layer neural network diagram"></svg>
+        <div class="nn__legend" aria-hidden="true">
+          <span><i class="line line--pos"></i>POSITIVE WEIGHT</span>
+          <span><i class="line line--neg"></i>NEGATIVE WEIGHT</span>
+          <span><i class="line line--live"></i>ACTIVE SIGNAL</span>
+        </div>
+      </div>
+
+      <div class="nn__panel">
+        <div class="nn__panel-block">
+          <span class="mini-label">INPUTS</span>
+          <label class="field field--row">
+            <span class="field__label">x₁ <b id="nn-x1-out">0.80</b></span>
+            <input type="range" id="nn-x1" min="0" max="1" step="0.01" value="0.8" />
+          </label>
+          <label class="field field--row">
+            <span class="field__label">x₂ <b id="nn-x2-out">0.35</b></span>
+            <input type="range" id="nn-x2" min="0" max="1" step="0.01" value="0.35" />
+          </label>
+          <label class="field field--row">
+            <span class="field__label">x₃ <b id="nn-x3-out">0.60</b></span>
+            <input type="range" id="nn-x3" min="0" max="1" step="0.01" value="0.6" />
+          </label>
+        </div>
+
+        <div class="nn__panel-block">
+          <span class="mini-label">THE ONLY EQUATION A NEURON NEEDS</span>
+          <div class="math">
+            <div class="math__line">z = <span class="math__w">w₁x₁</span> + <span class="math__w">w₂x₂</span> + <span class="math__w">w₃x₃</span> + <span class="math__b">b</span></div>
+            <div class="math__line">a = <span class="math__fn">ReLU</span>(z) = max(0, z)</div>
+            <div class="math__note">weights <span class="math__w">w</span> = importance · bias <span class="math__b">b</span> = how easily the neuron fires</div>
+          </div>
+        </div>
+
+        <div class="nn__panel-block nn__readout" id="nn-readout" aria-live="polite">
+          <span class="mini-label">INSPECT</span>
+          <p class="nn__readout-empty">Hover or tap any neuron to inspect its values and weights.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="fineprint nn__fineprint">Weights and biases here are fixed so the diagram stays readable. In a real network they are learned — which is what the next chapter does.</p>
+  </section>
+</section>
+
+<!-- ============================================================
+     CHAPTER 04 — THE TRAINING ROOM
+     ============================================================ -->
+<section class="chapter chapter--c4" id="c4" data-chapter="04" data-chapter-label="The Training Room">
+  <header class="chapter-head">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">04</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">LEARNING, FOR REAL</span>
+    </div>
+    <h2 class="display" data-split>HOW DOES A<br />MACHINE LEARN?</h2>
+    <p class="lede">It guesses. It measures how wrong the guess was. It adjusts every weight a little in the direction that reduces the error. Then it does it again — hundreds of thousands of times.</p>
+  </header>
+
+  <div class="loop" id="loop">
+    <ol class="loop__steps" id="loop-steps">
+      <li class="loop__step" data-loop="0"><span class="loop__num">01</span><span class="loop__name">FORWARD PASS</span><span class="loop__desc">Data flows in, predictions come out.</span></li>
+      <li class="loop__step" data-loop="1"><span class="loop__num">02</span><span class="loop__name">LOSS</span><span class="loop__desc">One number for “how wrong”.</span></li>
+      <li class="loop__step" data-loop="2"><span class="loop__num">03</span><span class="loop__name">BACKPROPAGATION</span><span class="loop__desc">Trace each weight's share of the blame.</span></li>
+      <li class="loop__step" data-loop="3"><span class="loop__num">04</span><span class="loop__name">UPDATE</span><span class="loop__desc">Nudge weights downhill. Repeat.</span></li>
+    </ol>
+    <p class="loop__caption" id="loop-caption">This loop is the whole of deep learning. Scale it up and you get a language model; it is the same four steps, thousands of billions of times.</p>
+  </div>
+
+  <section class="lab" id="lab" aria-label="Interactive training simulator">
+    <div class="lab__head">
+      <div>
+        <span class="section-tag">EXPERIMENT 02 — A REAL NEURAL NETWORK, TRAINING IN YOUR BROWSER</span>
+        <h3 class="sub-display">TEACH A NETWORK TO SEPARATE TWO WORLDS.</h3>
+      </div>
+      <div class="lab__status" id="lab-status"><span class="pulse-dot" aria-hidden="true"></span> <span id="lab-status-text">IDLE</span></div>
+    </div>
+
+    <div class="lab__grid">
+      <div class="lab__plot">
+        <canvas id="lab-boundary" width="720" height="560" role="img" aria-label="Decision boundary of the network on a two-dimensional dataset"></canvas>
+        <div class="lab__plot-overlay">
+          <span class="lab__axis lab__axis--x">FEATURE 1 →</span>
+          <span class="lab__axis lab__axis--y">FEATURE 2 →</span>
+          <div class="lab__legend">
+            <span><i class="dot dot--a"></i>CLASS 0</span>
+            <span><i class="dot dot--b"></i>CLASS 1</span>
+            <span><i class="area"></i>MODEL'S PREDICTION</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab__side">
+        <div class="lab__stats">
+          <div class="lab__stat"><span class="lab__stat-k">EPOCH</span><span class="lab__stat-v" id="lab-epoch">0</span></div>
+          <div class="lab__stat"><span class="lab__stat-k">LOSS</span><span class="lab__stat-v" id="lab-loss">—</span></div>
+          <div class="lab__stat"><span class="lab__stat-k">TRAIN ACC</span><span class="lab__stat-v" id="lab-acc-train">—</span></div>
+          <div class="lab__stat"><span class="lab__stat-k">TEST ACC</span><span class="lab__stat-v" id="lab-acc-test">—</span></div>
+        </div>
+
+        <div class="lab__chart-wrap">
+          <span class="mini-label">LOSS OVER EPOCHS <span class="lab__chart-note">(lower is better)</span></span>
+          <canvas id="lab-loss-chart" width="600" height="220" role="img" aria-label="Training loss curve"></canvas>
+        </div>
+
+        <div class="lab__controls">
+          <div class="lab__buttons">
+            <button class="btn btn--accent" id="lab-play" type="button">START TRAINING</button>
+            <button class="btn btn--ghost" id="lab-reset" type="button">RESET</button>
+          </div>
+          <label class="field">
+            <span class="field__label">LEARNING RATE <b id="lab-lr-out">0.30</b></span>
+            <input type="range" id="lab-lr" min="-2" max="1" step="0.05" value="-0.52" />
+          </label>
+          <label class="field">
+            <span class="field__label">DATASET</span>
+            <select id="lab-dataset" class="select">
+              <option value="xor">XOR — not separable by a line</option>
+              <option value="circles" selected>CIRCLES — inside vs outside</option>
+              <option value="moons">TWO MOONS — interlocking crescents</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field__label">CAPACITY (HIDDEN UNITS) <b id="lab-hidden-out">8</b></span>
+            <input type="range" id="lab-hidden" min="2" max="16" step="2" value="8" />
+          </label>
+        </div>
+
+        <div class="lab__probes">
+          <span class="mini-label">BEFORE / AFTER — WHAT IT PREDICTS</span>
+          <div class="lab__probe-list" id="lab-probes"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab__math">
+      <div class="math math--row">
+        <div>
+          <span class="mini-label">LOSS</span>
+          <div class="math__line">L = −[ y·log(p) + (1−y)·log(1−p) ]</div>
+        </div>
+        <div>
+          <span class="mini-label">UPDATE RULE</span>
+          <div class="math__line">w ← w − <span class="math__b">η</span> · ∂L/∂w</div>
+        </div>
+        <div>
+          <span class="mini-label">"LEARNING"</span>
+          <div class="math__line">η = the size of each step</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="fineprint lab__fineprint"><strong>This is a genuinely trained network:</strong> 2 inputs → 2 hidden layers → 1 output, with forward propagation, binary cross-entropy loss, backpropagation and gradient descent written in plain JavaScript. It is a teaching model with a few hundred weights — not a language model with hundreds of billions.</p>
+  </section>
+
+  <aside class="callout callout--wide" data-reveal aria-label="What the learning rate does">
+    <span class="callout__tag">WHAT YOU JUST BROKE, AND WHY</span>
+    <p>Set the learning rate too high and the loss climbs instead of falling: each step is so large that it jumps across the valley rather than into it. Set it too low and progress crawls. This balance — and thousands of small decisions like it — is what machine learning engineers actually tune.</p>
+  </aside>
+</section>
+
+<!-- ============================================================
+     CHAPTER 05 — TOKENS TO RESPONSES
+     ============================================================ -->
+<section class="chapter chapter--c5" id="c5" data-chapter="05" data-chapter-label="Words Into Tokens">
+  <header class="chapter-head">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">05</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">LARGE LANGUAGE MODELS</span>
+    </div>
+    <h2 class="display" data-split>FROM WORDS TO TOKENS.<br />FROM TOKENS TO RESPONSES.</h2>
+    <p class="lede">A chatbot never sees your words. It sees numbers. Your sentence is cut into fragments, turned into vectors, passed through attention layers — and the only thing the model ever does is guess the next fragment.</p>
+  </header>
+
+  <div class="tx" id="tx">
+    <div class="tx__inputbar">
+      <label class="tx__label" for="tx-input">TYPE A SENTENCE. WATCH IT BECOME NUMBERS.</label>
+      <div class="tx__row">
+        <input id="tx-input" class="tx__input" type="text" maxlength="140" value="Artificial intelligence learns patterns from examples." autocomplete="off" spellcheck="false" />
+        <button class="btn btn--accent" id="tx-run" type="button">PROCESS</button>
+      </div>
+      <div class="tx__presets" id="tx-presets">
+        <button type="button" data-preset="Artificial intelligence learns patterns from examples.">PATTERNS</button>
+        <button type="button" data-preset="The cat sat on the warm windowsill.">A CAT</button>
+        <button type="button" data-preset="Neural networks are surprising but imperfect.">IMPERFECT</button>
+      </div>
+    </div>
+
+    <div class="tx__pipeline" id="tx-pipeline">
+      <span class="tx__node" data-pipe="0">TOKENS</span>
+      <span class="tx__pipe" aria-hidden="true"></span>
+      <span class="tx__node" data-pipe="1">EMBEDDINGS</span>
+      <span class="tx__pipe" aria-hidden="true"></span>
+      <span class="tx__node" data-pipe="2">ATTENTION</span>
+      <span class="tx__pipe" aria-hidden="true"></span>
+      <span class="tx__node" data-pipe="3">NEXT TOKEN</span>
+    </div>
+
+    <div class="tx__steps">
+      <!-- 1 tokens -->
+      <article class="tx-step" data-step="0">
+        <div class="tx-step__head">
+          <span class="tx-step__num">01</span>
+          <h3>SPLIT INTO TOKENS</h3>
+          <p>Text is broken into sub-word pieces. Common words stay whole; rare words split. Each piece has an ID in a fixed vocabulary.</p>
+        </div>
+        <div class="tx-tokens" id="tx-tokens"></div>
+        <p class="tx-step__note" id="tx-token-count"></p>
+      </article>
+
+      <!-- 2 embeddings -->
+      <article class="tx-step" data-step="1">
+        <div class="tx-step__head">
+          <span class="tx-step__num">02</span>
+          <h3>EACH TOKEN BECOMES A VECTOR</h3>
+          <p>Every ID maps to a list of numbers — the embedding. Meaning becomes geometry: tokens used in similar contexts end up near each other.</p>
+        </div>
+        <div class="tx-embed" id="tx-embed"></div>
+        <p class="tx-step__note">Shown with 8 dimensions for legibility. Real models use 4 096 or more, and the values are learned, not hashed.</p>
+      </article>
+
+      <!-- 3 attention -->
+      <article class="tx-step" data-step="2">
+        <div class="tx-step__head">
+          <span class="tx-step__num">03</span>
+          <h3>ATTENTION: WHO IS LOOKING AT WHOM</h3>
+          <p>Inside a transformer, each token asks a question (a <em>query</em>), every token offers an answer key, and the best matches pass their information forward. A causal mask stops tokens from reading the future.</p>
+        </div>
+        <div class="tx-attn">
+          <div class="tx-attn__matrix-wrap">
+            <div class="tx-attn__labels" id="tx-attn-labels"></div>
+            <div class="tx-attn__matrix" id="tx-attn-matrix"></div>
+          </div>
+          <div class="tx-attn__readout">
+            <span class="mini-label">FOCUS</span>
+            <p id="tx-attn-readout">Hover a row to see where that token looks.</p>
+            <div class="tx-attn__math math">
+              <div class="math__line">Attention = softmax( <span class="math__w">QKᵀ</span> / √d ) <span class="math__b">V</span></div>
+              <div class="math__note">Q: what I'm looking for · K: what I offer · V: what I pass on</div>
+            </div>
+          </div>
+        </div>
+        <p class="tx-step__note">The grid is an illustrative self-attention map computed from token vectors and position — not the internal state of a production model.</p>
+      </article>
+
+      <!-- 4 next token -->
+      <article class="tx-step" data-step="3">
+        <div class="tx-step__head">
+          <span class="tx-step__num">04</span>
+          <h3>GUESS THE NEXT TOKEN. THEN AGAIN.</h3>
+          <p>After 96 layers of attention and computation, the model produces a score for every token in its vocabulary. Those scores become probabilities. One token is chosen, appended, and the whole process repeats.</p>
+        </div>
+        <div class="tx-next">
+          <div class="tx-next__candidates" id="tx-candidates"></div>
+          <div class="tx-next__gen">
+            <span class="mini-label">SEQUENTIAL GENERATION</span>
+            <p class="tx-next__text" id="tx-gen-text"></p>
+            <div class="tx-next__actions">
+              <button class="btn btn--accent" id="tx-gen-step" type="button">GENERATE NEXT TOKEN <span aria-hidden="true">→</span></button>
+              <button class="btn btn--ghost" id="tx-gen-reset" type="button">RESET</button>
+            </div>
+            <p class="fineprint" id="tx-gen-note">A toy language model built from a small local word table. It predicts like a real one does — only far, far worse.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="tx__truth">
+      <div class="tx__truth-block">
+        <span class="mini-label">TRAINING A LANGUAGE MODEL</span>
+        <ol class="tx__truth-list">
+          <li><b>Pre-training.</b> Predict the next token across an enormous body of text. This is where grammar, style and much of the world's recorded knowledge are absorbed.</li>
+          <li><b>Fine-tuning.</b> Train further on examples of instructions and good answers.</li>
+          <li><b>Human feedback (RLHF).</b> People rank competing answers; a reward model learns those preferences; the model is tuned toward what raters preferred.</li>
+        </ol>
+      </div>
+      <div class="tx__truth-block tx__truth-block--warn">
+        <span class="mini-label">THE CONSEQUENCE NOBODY CAN ENGINEER AWAY</span>
+        <p>Because the objective is <em>plausible continuation</em>, not <em>truth</em>, a language model can produce a sentence that reads like a citation and cites nothing. Fluency is not evidence. It was never designed to be.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER 06 — THE REAL WORLD
+     ============================================================ -->
+<section class="chapter chapter--c6" id="c6" data-chapter="06" data-chapter-label="Into the World">
+  <div class="gallery" id="gallery">
+    <div class="gallery__head">
+      <div class="chapter-head__meta">
+        <span class="chapter-head__num">06</span>
+        <span class="chapter-head__rule" aria-hidden="true"></span>
+        <span class="chapter-head__label">APPLICATIONS</span>
+      </div>
+      <h2 class="display">FROM THE SCREEN<br />INTO THE WORLD.</h2>
+      <p class="lede">Most AI never announces itself. It is sorting your scans, reading your soil, describing a photo to someone who cannot see it. Eight places where it is already working — and where it still isn't enough.</p>
+    </div>
+
+    <div class="gallery__viewport" id="gallery-viewport">
+      <div class="gallery__track" id="gallery-track"></div>
+
+      <div class="gallery__hud">
+        <div class="gallery__hud-left">
+          <span class="gallery__index" id="gallery-index">01</span>
+          <span class="gallery__sep">/</span>
+          <span class="gallery__total">08</span>
+        </div>
+        <div class="gallery__hud-bar"><span id="gallery-fill"></span></div>
+        <span class="gallery__name" id="gallery-name">HEALTHCARE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER 07 — LIMITS
+     ============================================================ -->
+<section class="chapter chapter--c7" id="c7" data-chapter="07" data-chapter-label="The Limits">
+  <header class="chapter-head chapter-head--quiet">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">07</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">FAILURE MODES</span>
+    </div>
+    <h2 class="display" data-split>POWER DOES NOT<br />MEAN PERFECTION.</h2>
+    <p class="lede">Every system above is a pattern-finding machine. Pattern-finding fails in predictable ways. Knowing the failure modes is the difference between using AI and being used by it.</p>
+  </header>
+
+  <div class="limits" id="limits">
+    <ol class="limits__list" id="limits-list"></ol>
+
+    <div class="verdict" id="verdict">
+      <div class="verdict__head">
+        <span class="section-tag">EXPERIMENT 03 — JUDGE THE OUTPUT</span>
+        <h3 class="sub-display">WOULD YOU TRUST THIS?</h3>
+        <p>Three real-shaped situations. Read the output, decide what a careful person should do, then see the reasoning.</p>
+      </div>
+      <div class="verdict__stage" id="verdict-stage"></div>
+      <div class="verdict__meta">
+        <span id="verdict-progress">SCENARIO 1 / 3</span>
+        <button class="btn btn--ghost btn--tiny" id="verdict-restart" type="button">RESTART</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CHAPTER 08 — THE HUMAN QUESTION
+     ============================================================ -->
+<section class="chapter chapter--c8" id="c8" data-chapter="08" data-chapter-label="The Human Question">
+  <div class="final__intro">
+    <div class="chapter-head__meta">
+      <span class="chapter-head__num">08</span>
+      <span class="chapter-head__rule" aria-hidden="true"></span>
+      <span class="chapter-head__label">THE HUMAN QUESTION</span>
+    </div>
+    <p class="final__line" data-final-line>WE BUILT THE MACHINES.</p>
+    <p class="final__line" data-final-line>NOW WE MUST DECIDE<br />HOW TO USE THEM.</p>
+    <p class="final__sub" data-final-line>Not because the machines will decide for us — but because they will not.</p>
+  </div>
+
+  <div class="quiz" id="quiz" role="region" aria-label="Final knowledge challenge">
+    <div class="quiz__bar">
+      <div class="quiz__bar-left">
+        <span class="section-tag">THE FINAL CHALLENGE</span>
+        <span class="quiz__count" id="quiz-count">QUESTION 1 OF 6</span>
+      </div>
+      <div class="quiz__bar-right">
+        <span class="quiz__score">SCORE <b id="quiz-score">0</b></span>
+        <div class="quiz__dots" id="quiz-dots" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="quiz__stage" id="quiz-stage"></div>
+  </div>
+
+  <div class="closing" id="closing">
+    <p class="closing__line" data-closing-line>THE FUTURE OF ARTIFICIAL INTELLIGENCE IS NOT JUST ABOUT MACHINES.</p>
+    <p class="closing__line closing__line--accent" data-closing-line>IT IS ABOUT THE PEOPLE WHO BUILD THEM.</p>
+    <div class="closing__mark" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <span class="footer__logo">INSIDE AI</span>
+      <p class="footer__tag">An interactive explainer on artificial intelligence — built with GSAP, plain JavaScript and no black boxes.</p>
+      <a class="btn btn--ghost btn--tiny" href="#hero" data-scroll-to="#hero">BACK TO THE BEGINNING</a>
+    </div>
+    <div class="footer__col">
+      <span class="mini-label">WHAT IS SIMPLIFIED</span>
+      <p>Diagrams use small numbers (3 inputs, 8 hidden units, 8 dimensions) so they fit on screen. Real models are the same ideas at a scale of billions. The tokenizer and attention map are illustrative; the training simulator is not.</p>
+    </div>
+    <div class="footer__col">
+      <span class="mini-label">READING</span>
+      <ul class="footer__reads">
+        <li>Brown et al., <em>Language Models are Few-Shot Learners</em> (GPT-3), 2020</li>
+        <li>Vaswani et al., <em>Attention Is All You Need</em>, 2017</li>
+        <li>LeCun, Bengio &amp; Hinton, <em>Deep Learning</em>, Nature, 2015</li>
+        <li>Jumper et al., <em>AlphaFold</em>, Nature, 2021</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__base">
+    <span>INSIDE AI · BEYOND THE ALGORITHM</span>
+    <span>NO TRACKING · NO ACCOUNTS · RUNS ENTIRELY IN YOUR BROWSER</span>
+  </div>
+</footer>
+
+<noscript>
+  <div class="noscript">INSIDE AI is an interactive experience that needs JavaScript. All of its diagrams and simulations run locally in your browser — nothing is sent anywhere.</div>
+</noscript>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
