@@ -1,0 +1,64 @@
+# ============================================================================
+#  INSIDE AI — Render Blueprint
+#  Docs: https://render.com/docs/blueprint-spec
+#
+#  The site is plain HTML/CSS/JS with every library and font vendored, so there
+#  is nothing to install and nothing to build: the repository root *is* the
+#  published site. No server, no environment variables, no paid services.
+#
+#  Deploy:  Render Dashboard → New + → Blueprint → pick this repository.
+#           Render reads this file and creates the static site automatically.
+# ============================================================================
+services:
+  - type: web
+    name: inside-ai
+    runtime: static
+    repo: https://github.com/ayaanpvp9-debug/Projectno2
+    branch: main
+
+    # No toolchain required — nothing is bundled, transpiled or minified.
+    buildCommand: ""
+    staticPublishPath: "."
+
+    # Re-deploy on every push to `branch`.
+    autoDeploy: true
+    pullRequestPreviewsEnabled: false
+
+    headers:
+      # -- HTML: always revalidate so a new deploy is picked up immediately ----
+      - path: /index.html
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+
+      # -- Styles and scripts -------------------------------------------------
+      # Filenames are not content-hashed, so keep these short-lived: a returning
+      # visitor gets a 304 at worst, and a fresh deploy is never stale for long.
+      - path: /css/*
+        name: Cache-Control
+        value: public, max-age=3600, must-revalidate
+      - path: /js/*
+        name: Cache-Control
+        value: public, max-age=3600, must-revalidate
+
+      # -- Vendored libraries and fonts --------------------------------------
+      # GSAP / ScrollTrigger / Lenis are pinned versions, and the woff2 fonts
+      # never change, so these can sit in the cache for a month.
+      - path: /vendor/*
+        name: Cache-Control
+        value: public, max-age=2592000
+
+      # -- Baseline hardening ------------------------------------------------
+      # Deliberately no X-Frame-Options / frame-ancestors: the site is designed
+      # to be embeddable in preview panes and design-review tools.
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: geolocation=(), microphone=(), camera=(), payment=()
