@@ -47,12 +47,20 @@ const LIMITS = [
       "Check the licence of a tool before commercial use, keep human authorship documented, and treat an unattributed imitation of a living artist's style as an ethical problem even where the law is unclear.",
   },
   {
-    title: "Human oversight & work",
+    title: "Human oversight",
+    tag: "ACCOUNTABILITY",
+    body:
+      "A system that is right most of the time teaches people to stop checking — a well-documented effect called automation bias. But a model cannot be held responsible. If a diagnosis, a loan refusal or a suspension is wrong, the accountability has to land on a person or an institution that could have said no.",
+    fix:
+      "Keep a named human accountable for consequential decisions. Make the model's uncertainty visible, log what it recommended, and let people override it without penalty.",
+  },
+  {
+    title: "Work & responsibility",
     tag: "SOCIETY",
     body:
-      "A model that is right most of the time encourages people to stop checking. Automating a task rarely removes the task; it moves the human to supervising it — usually with less context and more time pressure. Some roles change shape, and the people affected are rarely the ones who chose the deployment.",
+      "Automation rarely deletes a whole job at once; it reshapes tasks inside one. Drafting, summarising and first-pass analysis move to the model, while verification and exception-handling move to the person — often with less time and more volume. The people whose work changes are usually not the people who chose the deployment.",
     fix:
-      "Keep a named human accountable for consequential decisions. Make the model's confidence visible, log what it recommended, and let people override it without penalty.",
+      "Be specific about which tasks are automated and which are augmented. Train people for the supervision work, measure the change in workload, and decide in advance who is responsible when the system is wrong.",
   },
 ];
 

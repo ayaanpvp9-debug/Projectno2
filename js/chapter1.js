@@ -76,10 +76,45 @@ function initSequence() {
   gsap.set(learn, { opacity: 0 });
 
   if (reduceMotion) {
+    // Reduced motion: both diagrams exist side by side in time, swapped by the
+    // tabs. No scrubbing, no drawing animation — but nothing is missing.
     gsap.set(trad, { opacity: 1 });
     gsap.set(tradLayers, { opacity: 1, y: 0 });
     gsap.set(allWires, { strokeDashoffset: 0 });
-    if (caption) caption.textContent = CAPTIONS[0].text;
+
+    const setStaticPhase = (phase) => {
+      const traditional = phase === "traditional";
+      gsap.set(trad, { opacity: traditional ? 1 : 0 });
+      gsap.set(learn, { opacity: traditional ? 0 : 1 });
+      if (traditional) gsap.set([tradLayers, tradWires], { opacity: 1, y: 0 });
+      else gsap.set([learnLayers, learnWires], { opacity: 1, y: 0 });
+      const labels = traditional ? TRAD_STEPS : LEARN_STEPS;
+      tabs.forEach((t, i) => {
+        const on = t.dataset.approach === phase;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", String(on));
+      });
+      steps.forEach((li, i) => {
+        li.innerHTML = `<span>0${i + 1}</span>${labels[i]}`;
+        li.classList.toggle("is-active", traditional ? i === 2 : i === 2);
+      });
+      if (eqKey) eqKey.textContent = traditional ? "TRADITIONAL" : "MACHINE LEARNING";
+      if (eqVal) {
+        eqVal.textContent = traditional
+          ? "INPUT + RULES → OUTPUT"
+          : "INPUT + EXAMPLES → LEARNED MODEL";
+      }
+      if (caption) {
+        caption.textContent = traditional
+          ? CAPTIONS[0].text
+          : CAPTIONS[CAPTIONS.length - 1].text;
+      }
+    };
+
+    tabs.forEach((tab) =>
+      tab.addEventListener("click", () => setStaticPhase(tab.dataset.approach))
+    );
+    setStaticPhase("traditional");
     return;
   }
 
