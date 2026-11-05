@@ -3,7 +3,7 @@
    A five-stage pipeline you can scroll through and inspect, with four
    different kinds of raw material.
    ========================================================================== */
-import { gsap, ScrollTrigger, reduceMotion, seededRandom, clamp } from "./core.js";
+import { gsap, ScrollTrigger, reduceMotion, seededRandom, clamp, scroll } from "./core.js";
 
 const STAGES = [
   {
@@ -206,8 +206,7 @@ export function initDataFactory() {
     renderStage(activeStage, true);
     if (scrollToIt && trigger) {
       const target = trigger.start + (trigger.end - trigger.start) * ((activeStage + 0.5) / STAGES.length);
-      const reduce = reduceMotion ? "auto" : "smooth";
-      window.scrollTo({ top: target, behavior: reduce });
+      scroll.toY(target);
     }
   }
 

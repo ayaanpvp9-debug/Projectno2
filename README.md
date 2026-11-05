@@ -1,7 +1,7 @@
 # INSIDE AI — Beyond the Algorithm
 
 An immersive, scroll-driven documentary about artificial intelligence. Eight chapters, six
-interactive models, no backend, no accounts, no tracking. Everything — including the neural
+interactive demonstrations, no backend, no accounts, no tracking. Everything — including the neural
 network that actually trains in your browser — runs locally as a static site.
 
 > **The principle:** don't just explain artificial intelligence. Let the visitor experience how it works.

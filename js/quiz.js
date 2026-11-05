@@ -2,7 +2,7 @@
    CHAPTER 08 — "The human question."
    Final cinematic lines + a six-question knowledge challenge.
    ========================================================================== */
-import { gsap, ScrollTrigger, reduceMotion } from "./core.js";
+import { gsap, ScrollTrigger, reduceMotion, scroll } from "./core.js";
 
 const QUESTIONS = [
   {
@@ -220,7 +220,7 @@ export function initQuiz() {
     const rect = stage.getBoundingClientRect();
     if (rect.top < 60 || rect.bottom > window.innerHeight) {
       const y = stage.getBoundingClientRect().top + window.scrollY - 90;
-      window.scrollTo({ top: y, behavior: "smooth" });
+      scroll.toY(y);
     }
   }
 
@@ -264,7 +264,7 @@ export function initQuiz() {
 
     stage.querySelector("[data-quiz-jump]").addEventListener("click", (e) => {
       e.preventDefault();
-      window.scrollTo({ top: document.getElementById("c1").offsetTop, behavior: "smooth" });
+      scroll.to("#c1");
     });
   }
 

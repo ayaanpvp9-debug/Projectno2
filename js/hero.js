@@ -205,7 +205,7 @@ function createLattice(canvas) {
 /* --------------------------------------------------------------------------
    Opening sequence
    -------------------------------------------------------------------------- */
-function playOpening() {
+function playOpening(lattice) {
   const seq = gsap.utils.toArray("[data-seq]");
   const titleWrap = document.getElementById("hero-title-wrap");
   const titleA = document.querySelector(".hero__title-a");
@@ -222,6 +222,11 @@ function playOpening() {
     gsap.set(seq, { opacity: 0 });
     if (canvas) gsap.set(canvas, { opacity: 1 });
     return;
+  }
+
+  // The lattice assembles itself while the opening lines appear.
+  if (lattice && lattice.state) {
+    gsap.to(lattice.state, { growth: 1.2, duration: 3.4, ease: "power2.out", delay: 0.15 });
   }
 
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -316,7 +321,7 @@ export function initHero() {
   const canvas = document.getElementById("hero-canvas");
   const lattice = canvas ? createLattice(canvas) : { state: {} };
 
-  playOpening();
+  playOpening(lattice);
   if (!reduceMotion) createExit(lattice);
 
   // Re-fit the canvas after the loader hands over (viewport height settles).

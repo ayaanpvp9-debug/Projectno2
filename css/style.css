@@ -68,6 +68,7 @@ body {
   line-height: 1.6;
   font-weight: 400;
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -392,6 +393,13 @@ input[type="text"]:focus {
 }
 .dot--a { background: var(--blue); box-shadow: 0 0 0 1px rgba(75, 125, 255, 0.4); }
 .dot--b { background: var(--violet); box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.4); }
+.dot--ring {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+  border: 1px solid #9dc0ff;
+  box-shadow: none;
+}
 .line { display: inline-block; width: 16px; height: 2px; margin-right: 7px; vertical-align: middle; }
 .line--rule { background: repeating-linear-gradient(90deg, var(--muted-2) 0 4px, transparent 4px 7px); }
 .line--learned { background: var(--blue); }
@@ -682,6 +690,7 @@ input[type="text"]:focus {
    ========================================================================== */
 .hero {
   position: relative;
+  height: 100vh;
   height: 100svh;
   min-height: 620px;
   overflow: hidden;
@@ -965,6 +974,7 @@ input[type="text"]:focus {
    07 · CHAPTER 01
    ========================================================================== */
 .c1-pin {
+  min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -1747,6 +1757,14 @@ input[type="text"]:focus {
   color: var(--white);
   margin-top: 6px;
 }
+.probe__was {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: var(--muted-3);
+  margin-top: 2px;
+}
 .lab__math { margin-top: clamp(20px, 3vw, 32px); border-top: 1px solid var(--line); padding-top: 22px; }
 .lab__fineprint { margin-top: 18px; }
 
@@ -2040,7 +2058,7 @@ input[type="text"]:focus {
   align-items: center;
 }
 @media (min-width: 901px) {
-  .gallery__viewport { height: 100svh; min-height: 560px; }
+  .gallery__viewport { height: 100vh; height: 100svh; min-height: 560px; }
 }
 .gallery__track {
   display: flex;

@@ -55,6 +55,7 @@ export function initTrainingLab() {
     testX: [],
     testY: [],
     net: null,
+    before: [],
   };
 
   /* -- data ---------------------------------------------------------------- */
@@ -90,6 +91,7 @@ export function initTrainingLab() {
       buildProbes();
     }
     state.net = new NeuralNet([2, state.hidden, state.hidden, 1], 7);
+    state.before = PROBES.map((p) => state.net.predict([p.x, p.y]));
     state.epoch = 0;
     state.loss = 0;
     state.history = [];
@@ -295,6 +297,7 @@ export function initTrainingLab() {
         <div class="probe__k"><span>(${p.x.toFixed(2)}, ${p.y.toFixed(2)})</span><span class="probe__class">—</span></div>
         <div class="probe__track"><span class="probe__fill"></span></div>
         <span class="probe__v">p = 0.50 · uncertain</span>
+        <span class="probe__was">untrained</span>
       </div>`
     ).join("");
   }
@@ -312,6 +315,9 @@ export function initTrainingLab() {
       card.querySelector(".probe__v").textContent = `p = ${prob.toFixed(2)} · ${
         confidence > 0.9 ? "confident" : confidence > 0.65 ? "leaning" : "uncertain"
       }`;
+      const was = state.before[i];
+      const wasEl = card.querySelector(".probe__was");
+      if (wasEl) wasEl.textContent = `was ${was.toFixed(2)}`;
     });
   }
 

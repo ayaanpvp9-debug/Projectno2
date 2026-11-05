@@ -3,7 +3,7 @@
    Pinned ruins-vs-learning sequence + a live "learn by example" experiment
    (a polynomial logistic regression trained in the browser).
    ========================================================================== */
-import { gsap, ScrollTrigger, reduceMotion, seededRandom, clamp } from "./core.js";
+import { gsap, ScrollTrigger, reduceMotion, seededRandom, clamp, scroll } from "./core.js";
 
 /* --------------------------------------------------------------------------
    Copy that follows the scroll position
@@ -172,7 +172,7 @@ function initSequence() {
       if (!st) return;
       const target = tab.dataset.approach === "traditional" ? 0.02 : 0.55;
       const y = st.start + (st.end - st.start) * target;
-      window.scrollTo({ top: y, behavior: reduceMotion ? "auto" : "smooth" });
+      scroll.toY(y);
     });
   });
 }
