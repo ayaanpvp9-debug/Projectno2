@@ -1,4 +1,53 @@
 /* ==========================================================================
+   INSIDE AI — the entire visual system, generated in JavaScript.
+
+   There is no .css file anywhere in this project. This module builds the
+   stylesheet as a string and injects it into <head> the moment it loads, so
+   the first paint is already styled. Everything the browser needs — fonts,
+   colours, layout, breakpoints — lives here as JavaScript.
+
+   Loaded with a plain <script> tag in <head> (not a module) so it runs before
+   the body is parsed: no flash of unstyled content, and it works even if the
+   application modules fail.
+   ========================================================================== */
+(function () {
+  "use strict";
+
+  var CSS = `/* ============================================================
+   INSIDE AI — local typefaces (self-hosted, no external calls)
+   ============================================================ */
+@font-face {
+  font-family: "Space Grotesk Variable";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("vendor/fonts/space-grotesk.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("vendor/fonts/inter.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono Variable";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("vendor/fonts/jetbrains-mono.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ==========================================================================
    INSIDE AI — BEYOND THE ALGORITHM
    A scroll-driven documentary. Design system + chapter styling.
    --------------------------------------------------------------------------
@@ -68,13 +117,10 @@ body {
   line-height: 1.6;
   font-weight: 400;
   overflow-x: hidden;
-  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-
-body.is-loading { overflow: hidden; height: 100vh; }
 
 ::selection { background: rgba(75, 125, 255, 0.32); color: #fff; }
 
@@ -463,6 +509,9 @@ input[type="text"]:focus {
   transition: opacity 0.9s var(--ease), visibility 0.9s;
 }
 .loader.is-done { opacity: 0; visibility: hidden; }
+/* Fail-safe: if the app never boots, the loader still clears. */
+@keyframes loader-failsafe { to { opacity: 0; visibility: hidden; } }
+.loader { animation: loader-failsafe 0.6s ease 5s forwards; }
 .loader__inner { width: min(320px, 74vw); text-align: left; }
 .loader__brand {
   font-family: var(--font-display);
@@ -2807,30 +2856,38 @@ input[type="text"]:focus {
   padding-top: 0;
 }
 
+
 /* ==========================================================================
    19 · SCROLL CHOREOGRAPHY
-   Masked type lines, the chapter atmosphere, ghost numerals, head rules and
-   the live progress lines inside the data factory and language pipeline.
+   The three "pinned" stages are plain CSS sticky tracks. Nothing moves nodes
+   around, so two sections can never overlap, even if a script fails.
    ========================================================================== */
 
-/* Masked heading lines — each line rises out of its own overflow window. */
-.line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
-}
-.line__in {
-  display: block;
-  will-change: transform;
-  backface-visibility: hidden;
-}
-.display.is-split,
-.final__line.is-split,
-.sub-display.is-split { display: block; }
-.is-split .line__in em { display: inline; }
+.hero-scroll { position: relative; height: 200vh; height: 200svh; }
+.hero { position: sticky; top: 0; }
 
-/* Chapter atmosphere — a fixed wash whose hue follows the story. */
+.c1-scroll { position: relative; height: 380vh; height: 380svh; }
+.c1-pin { position: sticky; top: 0; }
+
+.gallery__scroll { position: relative; }
+@media (min-width: 901px) {
+  .gallery__viewport { position: sticky; top: 0; }
+}
+
+@media (max-width: 900px) {
+  .c1-scroll { height: 230vh; height: 230svh; }
+  .gallery__scroll { height: auto !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll,
+  .c1-scroll { height: auto; }
+  .hero,
+  .c1-pin,
+  .gallery__viewport { position: relative; top: auto; }
+}
+
+/* -- chapter atmosphere: a fixed wash whose hue follows the story --------- */
 .atmosphere {
   position: fixed;
   inset: 0;
@@ -2851,26 +2908,26 @@ input[type="text"]:focus {
       transparent 72%
     );
 }
-
-/* Oversized ghost chapter numerals. */
-.ghost-num {
-  position: absolute;
-  top: clamp(-0.3em, -0.2vw, 0em);
-  right: 0;
-  z-index: -1;
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(7rem, 17vw, 16rem);
-  line-height: 0.76;
-  letter-spacing: -0.06em;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
-  user-select: none;
-  pointer-events: none;
-  will-change: transform;
+@property --hue {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 224;
+}
+@property --glow {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0.18;
+}
+@property --drift {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .atmosphere { transition: --hue 1.1s ease, --glow 1.1s ease; }
 }
 
-/* The rule under each chapter head draws itself as you scroll in. */
+/* -- the rule under each chapter head draws itself ----------------------- */
 .chapter-head { --rule: 0; }
 .chapter-head::after {
   content: "";
@@ -2887,7 +2944,7 @@ input[type="text"]:focus {
   transform-origin: left center;
 }
 
-/* Live progress lines. */
+/* -- progress lines ------------------------------------------------------ */
 .factory__progress {
   height: 1px;
   background: rgba(255, 255, 255, 0.08);
@@ -2914,27 +2971,7 @@ input[type="text"]:focus {
   background: linear-gradient(90deg, var(--blue), var(--cyan));
 }
 
-/* Slightly richer default reveal for blocks. */
-.chapter-head__meta,
-.lede {
-  will-change: transform, opacity;
-}
-
-@media (max-width: 720px) {
-  .ghost-num {
-    font-size: 32vw;
-    right: -0.03em;
-    top: -0.05em;
-    -webkit-text-stroke-color: rgba(255, 255, 255, 0.055);
-  }
-  .chapter-head::after { margin-top: 18px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .line { overflow: visible; }
-}
-
-/* Permanent scroll progress line (fixed, full width, above the topbar). */
+/* -- document progress line --------------------------------------------- */
 .scroll-progress {
   position: fixed;
   top: 0;
@@ -2956,25 +2993,43 @@ input[type="text"]:focus {
   box-shadow: 0 0 10px rgba(75, 125, 255, 0.5);
 }
 
-/* Registered custom properties so the atmosphere can be transitioned by the
-   browser as well as tweened by GSAP. */
-@property --hue {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 224;
+@media (max-width: 720px) {
+  .chapter-head::after { margin-top: 18px; }
 }
-@property --glow {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0.18;
+
+/* -- runtime self-check panel (?debug=1) -------------------------------- */
+.debug-panel {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9800;
+  max-width: 260px;
+  padding: 10px 12px;
+  border: 1px solid rgba(120, 160, 255, 0.35);
+  border-radius: 6px;
+  background: rgba(6, 9, 18, 0.92);
+  color: #cfe0ff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  white-space: pre-wrap;
 }
-@property --drift {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .atmosphere {
-    transition: --hue 1.1s ease, --glow 1.1s ease;
+.debug-panel b { color: #fff; font-weight: 500; }
+.debug-panel .is-bad { color: #ff8a8a; }
+`;
+
+  function inject() {
+    if (document.getElementById("inside-ai-theme")) return;
+    var style = document.createElement("style");
+    style.id = "inside-ai-theme";
+    style.setAttribute("data-generated-by", "js/theme.js");
+    style.appendChild(document.createTextNode(CSS));
+    (document.head || document.documentElement).appendChild(style);
   }
-}
+
+  inject();
+
+  // Expose the source so the runtime self-check can report on it.
+  window.INSIDE_AI_THEME = { bytes: CSS.length, inject: inject };
+})();

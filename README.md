@@ -41,7 +41,7 @@ What the Blueprint sets up:
 | Build command | *(empty — nothing to build)* |
 | Publish path | `.` (the repository root is the site) |
 | Auto-deploy | on every push to `main` |
-| Caching | HTML `must-revalidate`; `/css/*` and `/js/*` 1 hour; `/vendor/*` 30 days |
+| Caching | HTML `must-revalidate`; `/js/*` 1 hour; `/vendor/*` 30 days |
 | Headers | `nosniff`, `Referrer-Policy`, `Permissions-Policy` |
 
 Everything the page needs is vendored (`vendor/`), so the deploy has no external
@@ -100,34 +100,48 @@ document, and every sequence is tied to a reading beat rather than to time:
 
 | Layer | Where | What it does |
 | --- | --- | --- |
-| Pinned prologue | `#hero` (desktop **and** mobile) | title dissolves, the network expands, hand-off copy rises |
-| Pinned comparison | `#c1-pin` | rules-vs-learning diagrams draw themselves as you scroll |
+| Sticky prologue | `#hero` in `#hero-scroll` (desktop **and** mobile) | title dissolves, the network expands, hand-off copy rises |
+| Sticky comparison | `#c1-pin` in `#c1-scroll` | rules-vs-learning diagrams draw themselves as you scroll |
 | Network assembly | Ch.03 | neurons pop in layer by layer, links stroke on, then one forward pass |
 | Data factory | Ch.02 | a live progress line fills, stages advance, chips stagger in |
 | Training lab | Ch.04 | the loop steps advance with scroll; training auto-starts once in view |
 | Language pipeline | Ch.05 | progress line, attention map redraw, token chips |
-| Horizontal gallery | Ch.06 (desktop) | eight domains scrubbed sideways; on mobile a scroll progress line instead |
-| Masked typography | every chapter | headlines split into lines that rise out of their own mask |
+| Horizontal gallery | Ch.06 (desktop) | eight domains scrubbed sideways inside a sticky track; on mobile a progress line |
+| Headline lifts | every chapter | headings rise and sharpen as they enter the reading band |
 | Atmosphere | whole document | a fixed colour wash whose hue shifts chapter by chapter |
-| Ghost numerals | every chapter | oversized outline numerals parallaxing behind the heads |
 | Progress line | whole document | a fixed 2px line showing position in the story |
 | Velocity skew | desktop | large panels lean into fast scrolling and settle |
 
 All of it is skipped under `prefers-reduced-motion`, where content is laid out
 statically and every control still works.
 
+The three "pinned" stages are **CSS sticky tracks**, not scripted pins: the page
+holds a section in place without JavaScript moving a single node, so no two
+sections can ever overlap — even if a script fails. ScrollTrigger only reads
+progress and scrubs the timeline.
+
+### Styling
+
+There is no stylesheet file in this repository. `js/theme.js` holds the entire
+visual system — tokens, layout, breakpoints, `@font-face`, reduced-motion rules —
+as a JavaScript string, and injects it into `<head>` before the body is parsed.
+It is a plain (non-module) script for exactly that reason: no flash of unstyled
+content, and the page is styled even if every application module fails.
+
+Add `?debug=1` to the URL for an on-screen self-check panel (theme size, GSAP and
+ScrollTrigger versions, trigger count, scroll position, captured errors).
+
 ## Structure
 
 ```
 index.html              all eight chapters, semantic landmarks, no framework
-css/
-  fonts.css             @font-face for the three self-hosted variable fonts
-  style.css             design tokens, chapter layout, responsive rules, reduced-motion
 js/
-  main.js               entry point
+  main.js               entry point (ES module)
   core.js               boot, Lenis + GSAP plumbing, chrome, reveals, counters
-  motion.js             document-wide scroll choreography (masked type, atmosphere,
-                        ghost numerals, parallax, progress line, velocity skew)
+  theme.js              the whole visual system, generated in JavaScript and
+                        injected into <head> — this project has no .css file
+  motion.js             document-wide scroll choreography (atmosphere, head rules,
+                        parallax, progress line, velocity skew)
   hero.js               canvas lattice + opening timeline + pinned exit
   chapter1.js           pinned rules-vs-learning sequence, learn-by-example demo
   chapter2.js           data pipeline content, stage/type interaction

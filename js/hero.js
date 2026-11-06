@@ -260,6 +260,8 @@ function playOpening(lattice) {
    -------------------------------------------------------------------------- */
 function createExit(lattice) {
   const hero = document.getElementById("hero");
+  // The hero is held in place by a CSS sticky track; ScrollTrigger only scrubs.
+  const track = document.getElementById("hero-scroll") || hero;
   const handoff = document.getElementById("hero-handoff");
   const inner = document.querySelector(".hero__inner");
   const frame = document.querySelector(".hero__frame");
@@ -272,12 +274,10 @@ function createExit(lattice) {
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
-        trigger: hero,
+        trigger: track,
         start: "top top",
-        end: "+=125%",
+        end: "bottom bottom",
         scrub: 0.7,
-        pin: true,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
@@ -302,12 +302,10 @@ function createExit(lattice) {
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
-        trigger: hero,
+        trigger: track,
         start: "top top",
-        end: "+=85%",
+        end: "bottom bottom",
         scrub: 0.6,
-        pin: true,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });

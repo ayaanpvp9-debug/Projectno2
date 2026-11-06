@@ -376,21 +376,30 @@ export function initApplications() {
 
   const mm = gsap.matchMedia();
 
-  /* -- desktop: pinned horizontal scrub ----------------------------------- */
+  /* -- desktop: sticky horizontal scrub ----------------------------------- */
   mm.add("(min-width: 901px)", () => {
+    // The viewport is held by CSS sticky; this wrapper supplies the scroll
+    // distance, and ScrollTrigger only converts position into horizontal travel.
+    const wrap = document.getElementById("gallery-scroll");
     const padLeft = () => parseFloat(window.getComputedStyle(viewport).paddingLeft) || 0;
     const distance = () => Math.max(1, track.scrollWidth + padLeft() - viewport.clientWidth);
+
+    const setTrackHeight = () => {
+      if (!wrap) return;
+      const held = viewport.clientHeight || window.innerHeight;
+      wrap.style.height = Math.round(held + distance() * 1.15) + "px";
+    };
+    setTrackHeight();
+    ScrollTrigger.addEventListener("refreshInit", setTrackHeight);
 
     const tween = gsap.to(track, {
       x: () => -distance(),
       ease: "none",
       scrollTrigger: {
-        trigger: "#gallery-viewport",
+        trigger: wrap || viewport,
         start: "top top",
-        end: () => "+=" + distance() * 1.15,
-        pin: true,
+        end: "bottom bottom",
         scrub: 0.6,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           if (fillEl) fillEl.style.width = (self.progress * 100).toFixed(2) + "%";
@@ -413,9 +422,11 @@ export function initApplications() {
     });
 
     return () => {
+      ScrollTrigger.removeEventListener("refreshInit", setTrackHeight);
       tween.scrollTrigger && tween.scrollTrigger.kill();
       tween.kill();
       gsap.set(track, { x: 0 });
+      if (wrap) wrap.style.height = "";
     };
   });
 

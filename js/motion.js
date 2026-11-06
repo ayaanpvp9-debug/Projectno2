@@ -1,91 +1,63 @@
 /* ==========================================================================
    MOTION — the scroll choreography layer that runs over the whole document.
 
-   · masked line-by-line typography reveals (scrubbed, so scrolling drives them)
+   Every animation here is a transform or an opacity on an element the layout
+   owns from the start: nothing is re-parented, no pinned nodes, no clipped
+   text. That means if the scroll engine ever fails to update, the page still
+   reads perfectly — it simply stops moving.
+
+   · scrubbed block entrances
    · a chapter atmosphere that changes hue as the story moves
-   · oversized ghost numerals that parallax behind each chapter
    · a drawing rule under every chapter head
    · scrubbed parallax on the big visual panels
    · scroll-velocity skew on interactive panels (desktop only)
+   · a permanent document progress line
    ========================================================================== */
 import { gsap, ScrollTrigger, reduceMotion, clamp, isMobileLayout } from "./core.js";
 
 /* --------------------------------------------------------------------------
-   1 · Split a heading into masked lines (splits on <br>, keeps inline HTML)
+   1 · Block reveals — the whole block rises, nothing is split or masked
    -------------------------------------------------------------------------- */
-function splitIntoLines(el) {
-  if (el.dataset.linesSplit === "true") {
-    return [...el.querySelectorAll(".line__in")];
-  }
-  const chunks = el.innerHTML.split(/<br\s*\/?>/i);
-  if (!chunks.some((c) => c.trim().length)) return [];
-
-  el.innerHTML = chunks
-    .map((chunk) => `<span class="line"><span class="line__in">${chunk.trim()}</span></span>`)
-    .join(" ");
-  el.classList.add("is-split");
-  el.dataset.linesSplit = "true";
-  return [...el.querySelectorAll(".line__in")];
-}
-
 function initTypography() {
-  const headings = gsap.utils.toArray("h2.display, .final__line, .sub-display");
-  const closingLines = gsap.utils.toArray(".closing__line");
+  if (reduceMotion) return;
 
-  headings.forEach((el) => {
-    const lines = splitIntoLines(el);
-    if (!lines.length) return;
-    if (reduceMotion) return;
+  const blocks = gsap.utils.toArray(
+    "h2.display, .sub-display, .final__line, .closing__line, .gallery__head .display"
+  );
+  if (!blocks.length) return;
 
-    gsap.set(lines, { yPercent: 118 });
-    gsap.to(lines, {
-      yPercent: 0,
-      ease: "power4.out",
-      stagger: 0.09,
-      scrollTrigger: {
-        trigger: el,
-        start: "top 96%",
-        end: "top 58%",
-        scrub: 0.65,
-      },
-    });
-  });
-
-  // The closing couplet owns a gradient on the element itself, so it moves as a
-  // block rather than per line (keeps the background-clip intact).
-  if (!reduceMotion && closingLines.length) {
+  blocks.forEach((el) => {
     gsap.fromTo(
-      closingLines,
-      { yPercent: 18, opacity: 0 },
+      el,
+      { y: 54, opacity: 0.12 },
       {
-        yPercent: 0,
+        y: 0,
         opacity: 1,
-        stagger: 0.1,
         ease: "none",
         scrollTrigger: {
-          trigger: "#closing",
-          start: "top 92%",
-          end: "top 55%",
-          scrub: 0.7,
+          trigger: el,
+          start: "top 95%",
+          end: "top 60%",
+          scrub: 0.6,
         },
       }
     );
-  }
+  });
 }
 
 /* --------------------------------------------------------------------------
    2 · Chapter atmosphere — the environment shifts hue with the story
    -------------------------------------------------------------------------- */
 const CHAPTER_HUES = [
-  { hue: 224, glow: 0.2 }, // prologue
+  { hue: 224, glow: 0.22 }, // prologue
   { hue: 232, glow: 0.18 }, // 01 foundations
-  { hue: 268, glow: 0.2 }, // 02 data
-  { hue: 196, glow: 0.16 }, // 03 network
-  { hue: 252, glow: 0.18 }, // 04 training
-  { hue: 214, glow: 0.18 }, // 05 language
-  { hue: 236, glow: 0.15 }, // 06 applications
-  { hue: 34, glow: 0.09 }, // 07 limits — restrained
-  { hue: 266, glow: 0.22 }, // 08 human question
+  { hue: 268, glow: 0.22 }, // 02 data
+  { hue: 196, glow: 0.17 }, // 03 network
+  { hue: 252, glow: 0.2 }, // 04 training
+  { hue: 214, glow: 0.19 }, // 05 language
+  { hue: 236, glow: 0.16 }, // 06 applications
+  { hue: 34, glow: 0.1 }, // 07 limits — restrained
+  { hue: 266, glow: 0.24 }, // 08 human question
 ];
 
 function initAtmosphere() {
@@ -102,13 +74,7 @@ function initAtmosphere() {
       atmos.style.setProperty("--glow", glow);
       return;
     }
-    gsap.to(atmos, {
-      "--hue": hue,
-      "--glow": glow,
-      duration,
-      ease: "sine.inOut",
-      overwrite: true,
-    });
+    gsap.to(atmos, { "--hue": hue, "--glow": glow, duration, ease: "sine.inOut", overwrite: true });
   };
 
   sections.forEach((section, i) => {
@@ -135,34 +101,7 @@ function initAtmosphere() {
 }
 
 /* --------------------------------------------------------------------------
-   3 · Ghost numerals
-   -------------------------------------------------------------------------- */
-function initGhostNumerals() {
-  gsap.utils.toArray("main .chapter").forEach((chapter) => {
-    const num = chapter.querySelector(".chapter-head__num")?.textContent.trim();
-    if (!num) return;
-    const ghost = document.createElement("span");
-    ghost.className = "ghost-num";
-    ghost.textContent = num;
-    ghost.setAttribute("aria-hidden", "true");
-    chapter.appendChild(ghost);
-
-    if (reduceMotion) return;
-    gsap.fromTo(
-      ghost,
-      { yPercent: 26, opacity: 0.15 },
-      {
-        yPercent: -14,
-        opacity: 1,
-        ease: "none",
-        scrollTrigger: { trigger: chapter, start: "top bottom", end: "bottom top", scrub: true },
-      }
-    );
-  });
-}
-
-/* --------------------------------------------------------------------------
-   4 · Chapter head rule draws itself
+   3 · Chapter head rule draws itself
    -------------------------------------------------------------------------- */
 function initHeadRules() {
   if (reduceMotion) {
@@ -176,24 +115,24 @@ function initHeadRules() {
       {
         "--rule": 1,
         ease: "none",
-        scrollTrigger: { trigger: head, start: "top 88%", end: "top 48%", scrub: 0.6 },
+        scrollTrigger: { trigger: head, start: "top 90%", end: "top 50%", scrub: 0.6 },
       }
     );
   });
 }
 
 /* --------------------------------------------------------------------------
-   5 · Panel parallax
+   4 · Panel parallax
    -------------------------------------------------------------------------- */
 const PARALLAX = [
-  [".factory", 26],
-  [".nn__stage", 44],
-  [".lab__plot", 30],
-  [".tx-attn", 26],
-  [".tx-next", 26],
-  [".app__visual", 34],
-  [".verdict", 28],
-  [".c1-stage__visual", 22],
+  [".factory", 30],
+  [".nn__stage", 54],
+  [".lab__plot", 36],
+  [".tx-attn", 30],
+  [".tx-next", 30],
+  [".app__visual", 40],
+  [".verdict", 32],
+  [".c1-stage__visual", 26],
 ];
 
 function initParallax() {
@@ -214,16 +153,14 @@ function initParallax() {
 }
 
 /* --------------------------------------------------------------------------
-   6 · Scroll-velocity skew — panels lean into the scroll, then settle
+   5 · Scroll-velocity skew — panels lean into the scroll, then settle
    -------------------------------------------------------------------------- */
 function initVelocitySkew() {
   if (reduceMotion || isMobileLayout()) return;
   const targets = gsap.utils.toArray(".lab__plot, .factory__detail, .verdict, .c1-demo");
   if (!targets.length) return;
 
-  const setters = targets.map((el) =>
-    gsap.quickTo(el, "skewY", { duration: 0.55, ease: "power3.out" })
-  );
+  const setters = targets.map((el) => gsap.quickTo(el, "skewY", { duration: 0.55, ease: "power3.out" }));
 
   ScrollTrigger.create({
     onUpdate: (self) => {
@@ -234,26 +171,28 @@ function initVelocitySkew() {
 }
 
 /* --------------------------------------------------------------------------
-   7 · Section entrances — blocks lift as they come into view
+   6 · Section entrances — blocks lift as they come into view
    -------------------------------------------------------------------------- */
 function initSectionEntrances() {
   if (reduceMotion) return;
-  gsap.utils.toArray(".c1-defs, .loop, .limits__list, .tx__truth, .stat-band, .callout").forEach((el) => {
-    gsap.fromTo(
-      el,
-      { y: 42, opacity: 0.25 },
-      {
-        y: 0,
-        opacity: 1,
-        ease: "none",
-        scrollTrigger: { trigger: el, start: "top 92%", end: "top 62%", scrub: 0.5 },
-      }
-    );
-  });
+  gsap.utils
+    .toArray(".c1-defs, .loop, .limits__list, .tx__truth, .stat-band, .callout")
+    .forEach((el) => {
+      gsap.fromTo(
+        el,
+        { y: 46, opacity: 0.2 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: { trigger: el, start: "top 94%", end: "top 62%", scrub: 0.5 },
+        }
+      );
+    });
 }
 
 /* --------------------------------------------------------------------------
-   8 · A permanent progress line — the page is always visibly moving
+   7 · A permanent progress line — the page is always visibly moving
    -------------------------------------------------------------------------- */
 function initScrollProgress() {
   const bar = document.createElement("div");
@@ -278,7 +217,6 @@ function initScrollProgress() {
 export function initMotion() {
   initTypography();
   initAtmosphere();
-  initGhostNumerals();
   initHeadRules();
   initParallax();
   initVelocitySkew();
