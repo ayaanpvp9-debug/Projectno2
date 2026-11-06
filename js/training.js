@@ -338,8 +338,11 @@ export function initTrainingLab() {
 
   function tick(now) {
     requestAnimationFrame(tick);
-    if (!state.running || !state.inView || !state.net) return;
+    // The demo belongs to the visitor, not to the scroll engine: once running it
+    // keeps running even if a scroll trigger never fires.
+    if (!state.running || !state.net) return;
     if (document.hidden) return;
+    if (!state.inView) return; // far off-screen: skip the maths, keep the state
     if (now - lastFrame < 16) return; // cap ~60fps
     lastFrame = now;
     frames++;
@@ -429,15 +432,19 @@ export function initTrainingLab() {
     hiddenSlider.addEventListener("change", () => reset(true));
   }
 
-  /* -- pause offscreen ----------------------------------------------------- */
-  ScrollTrigger.create({
-    trigger: "#lab",
-    start: "top bottom",
-    end: "bottom top",
-    onToggle: (self) => {
-      state.inView = self.isActive;
-    },
-  });
+  /* -- pause offscreen (perf only; never blocks a manual start) ------------ */
+  if (typeof window.IntersectionObserver === "function") {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          state.inView = entry.isIntersecting;
+        });
+      },
+      { rootMargin: "200px 0px" }
+    );
+    const lab = document.getElementById("lab");
+    if (lab) io.observe(lab);
+  }
 
   /* -- init ---------------------------------------------------------------- */
   state.lr = lrValue();

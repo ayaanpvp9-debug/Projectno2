@@ -118,15 +118,15 @@ function initSequence() {
     return;
   }
 
+  // The comparison is held in place by a CSS sticky track, so no pinning:
+  // ScrollTrigger only reads progress and scrubs the diagrams.
   const tl = gsap.timeline({
     defaults: { ease: "none" },
     scrollTrigger: {
-      trigger: pin,
+      trigger: document.getElementById("c1-scroll") || pin,
       start: "top top",
-      end: "+=280%",
-      pin: true,
+      end: "bottom bottom",
       scrub: 0.55,
-      anticipatePin: 1,
       invalidateOnRefresh: true,
       onUpdate: (self) => updateCopy(self.progress),
     },

@@ -81,7 +81,13 @@ export const scroll = {
       gsap.ticker.lagSmoothing(0);
 
       // Keep ScrollTrigger honest about the real document height.
-      ScrollTrigger.addEventListener("refreshInit", () => this.lenis.resize());
+      ScrollTrigger.addEventListener("refreshInit", () => {
+        try {
+          this.lenis.resize();
+        } catch (err) {
+          /* ignore — measurement continues */
+        }
+      });
     } catch (err) {
       console.warn("[INSIDE AI] Smooth scroll unavailable, using native scroll.", err);
       this.enabled = false;
@@ -110,13 +116,56 @@ export const scroll = {
   },
   stop() {
     if (this.lenis) this.lenis.stop();
-    document.body.style.overflow = "hidden";
   },
   start() {
     if (this.lenis) this.lenis.start();
-    document.body.style.overflow = "";
   },
 };
+
+/* --------------------------------------------------------------------------
+   Runtime self-check — open the site with ?debug=1 to see it on screen.
+   It reports what actually loaded, how many triggers exist and the scroll
+   position, which makes "nothing moves" diagnosable from a single screenshot.
+   -------------------------------------------------------------------------- */
+function initRuntimeChecks() {
+  window.__errors = window.__errors || [];
+
+  const enabled = /[?&]debug\b/.test(window.location.search);
+  const panel = document.createElement("div");
+  panel.className = "debug-panel";
+  panel.hidden = !enabled;
+  panel.setAttribute("aria-hidden", "true");
+  document.body.appendChild(panel);
+
+  const report = () => {
+    if (panel.hidden) return;
+    const st = window.ScrollTrigger;
+    const doc = document.documentElement;
+    const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+    const lines = [
+      "INSIDE AI · SELF-CHECK",
+      "theme        " + (window.INSIDE_AI_THEME ? window.INSIDE_AI_THEME.bytes + " b" : "MISSING"),
+      "gsap         " + (window.gsap ? window.gsap.version : "MISSING"),
+      "scrolltrigger " + (st ? st.version : "MISSING"),
+      "lenis        " + (window.Lenis ? "on" : "off"),
+      "triggers     " + (st ? st.getAll().length : 0),
+      "pinned       " + (st ? st.getAll().filter((t) => t.pin).length : 0),
+      "scroll       " + Math.round(window.scrollY) + " / " + Math.round(max),
+      "progress     " + Math.round((window.scrollY / max) * 100) + "%",
+      "reduced      " + (reduceMotion ? "yes" : "no"),
+      "errors       " + window.__errors.length,
+    ];
+    panel.innerHTML = lines
+      .map((line, i) => (i === 0 ? "<b>" + line + "</b>" : line))
+      .join("\n") +
+      (window.__errors.length
+        ? '<span class="is-bad">\n' + String(window.__errors[0]).slice(0, 120) + "</span>"
+        : "");
+  };
+
+  report();
+  if (enabled) window.setInterval(report, 500);
+}
 
 /* --------------------------------------------------------------------------
    Loader
@@ -151,8 +200,18 @@ export function runLoader() {
       onComplete: () => {
         if (loader) loader.classList.add("is-done");
         document.body.classList.remove("is-loading");
-        if (scroll.lenis) scroll.lenis.resize();
+        if (scroll.lenis) {
+          try {
+            scroll.lenis.resize();
+          } catch (err) {
+            /* a smooth-scroll hiccup must never stop the refresh */
+          }
+        }
         ScrollTrigger.refresh();
+        // Layout keeps settling (fonts, canvases, sticky tracks): measure again.
+        [280, 900, 2200].forEach((delay) =>
+          window.setTimeout(() => ScrollTrigger.refresh(), delay)
+        );
         setTimeout(resolve, 220);
       },
     });
@@ -380,6 +439,8 @@ async function boot() {
     ["limits", initLimits],
     ["quiz", initQuiz],
   ];
+
+  initRuntimeChecks();
 
   modules.forEach(([name, fn]) => {
     try {
